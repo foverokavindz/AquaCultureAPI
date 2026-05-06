@@ -1,0 +1,29 @@
+## .NET
+bin/
+obj/
+*.user
+*.suo
+*.cache
+*.dll
+*.exe
+*.pdb
+
+## Visual Studio
+.vs/
+*.rsuser
+*.userosscache
+*.sln.docstates
+launchSettings.json
+
+## User-specific files
+appsettings.Development.json
+
+## NuGet
+*.nupkg
+**/packages/*
+
+## Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
