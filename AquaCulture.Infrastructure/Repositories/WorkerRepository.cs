@@ -56,6 +56,13 @@ namespace AquaCulture.Infrastructure.Repositories
                 .Include(w => w.FishFarm)
                 .ToListAsync();
         }
+
+        public async Task<Worker?> GetByIdWithFishFarmAsync(Guid id)
+        {
+            return await _dbSet
+                .Include(w => w.FishFarm)
+                .FirstOrDefaultAsync(w => w.Id == id);
+        }
     }
 
 

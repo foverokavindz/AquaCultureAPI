@@ -33,7 +33,7 @@ namespace AquaCulture.API.Controllers
         {
             try
             {
-                var worker = await _workerService.GetWorkerByIdAsync(id);
+                var worker = await _workerService.GetByIdWithFishFarmAsync(id);
                 return Ok(ApiResponseDto<WorkerDto>.SuccessResponse(worker, $"Retrieved worker with ID {id} successfully."));
             }
             catch (KeyNotFoundException ex)

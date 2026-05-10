@@ -196,5 +196,30 @@ namespace AquaCulture.Application.Services
                 } : null,
             });
         }
+
+        public async Task<WorkerDto> GetByIdWithFishFarmAsync(Guid id)
+        {
+            var worker = await _workerRepository.GetByIdWithFishFarmAsync(id);
+            if (worker == null) 
+                throw new KeyNotFoundException($"Worker with ID {id} not found.");
+
+            return new WorkerDto
+            {
+                Id = worker.Id,
+                Name = worker.Name,
+                ProfileImageUrl = worker.ProfileImageUrl,
+                Age = worker.Age,
+                Email = worker.Email,
+                Position = worker.Position,
+                CertifiedUntil = worker.CertifiedUntil,
+                FishFarmId = worker.FishFarmId,
+                FishFarm = worker.FishFarm != null ? new FishFarmSummaryDto
+                {
+                    Id = worker.FishFarm.Id,
+                    Name = worker.FishFarm.Name,
+                    PictureUrl = worker.FishFarm.PictureUrl
+                } : null,
+            };
+        }
     }
 }

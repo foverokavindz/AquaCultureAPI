@@ -1,5 +1,6 @@
 ﻿using AquaCulture.Application.Dto.FishFarm;
 using AquaCulture.Application.Dto.Worker;
+using AquaCulture.Domain.Entities;
 
 namespace AquaCulture.Application.Interfaces.services
 {
@@ -12,5 +13,6 @@ namespace AquaCulture.Application.Interfaces.services
         Task<WorkerDto> UpdateWorkerAsync(Guid id, UpdateWorkerDto dto);
         Task DeleteWorkerAsync(Guid id);
         Task<IEnumerable<WorkerDto>> SearchWorkerAsync(SearchWorkerDto dto);
+        Task<WorkerDto?> GetByIdWithFishFarmAsync(Guid id);
     }
 }
