@@ -1,4 +1,4 @@
-﻿using AquaCulture.Application.interfaces;
+﻿using AquaCulture.Application.Interfaces.Repositories;
 using AquaCulture.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,10 +20,18 @@ namespace AquaCulture.Infrastructure.Repositories
             await _dbSet.AddAsync(entity);
         }
 
-        public async Task DeleteAsync(T entity)
+        public async Task<Task> DeleteAsync(T entity)
         {
-            _dbSet.Remove(entity); // this should be soft delete
-            //return Task.CompletedTask;
+            var property = entity.GetType().GetProperty("IsDeleted");
+            if (property != null)
+            {
+                property.SetValue(entity, true);
+                _dbSet.Update(entity);
+            }
+            else
+                _dbSet.Remove(entity); 
+
+            return Task.CompletedTask;
         }
 
         public async Task<IEnumerable<T>> GetAllAsync()

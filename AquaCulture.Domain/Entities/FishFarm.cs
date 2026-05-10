@@ -9,7 +9,6 @@
         public required bool HasBarge { get; set; }
         public required string PictureUrl { get; set; }
         public List<Worker> Workers { get; set; } = [];
-
-        // is deleted flag for soft delete
+        public bool IsDeleted { get; set; } = false;
     }
 }

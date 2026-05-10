@@ -1,6 +1,7 @@
 ﻿using AquaCulture.Application.Dto.Common;
+using AquaCulture.Application.Dto.FishFarm;
 using AquaCulture.Application.Dto.Worker;
-using AquaCulture.Application.Interfaces;
+using AquaCulture.Application.Interfaces.services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AquaCulture.API.Controllers
@@ -19,7 +20,7 @@ namespace AquaCulture.API.Controllers
         [HttpGet("fishfarm/{farmId}")]
         public async Task<IActionResult> GetWorkersByFarmId(Guid farmId)
         {
-            var workers = await _workerService.GetWorkersByFarmIdAsync(farmId);
+            var workers = await _workerService.GetWorkersByFishFarmIdAsync(farmId);
 
             if (!workers.Any())
                 return NotFound(ApiResponseDto<IEnumerable<WorkerDto>>.ErrorResponse($"No workers found for fish farm {farmId}."));
@@ -83,6 +84,20 @@ namespace AquaCulture.API.Controllers
             {
                 return NotFound(ApiResponseDto<WorkerDto>.ErrorResponse(ex.Message));
             }
+        }
+
+        [HttpGet("search")]
+        public async Task<IActionResult> SearchWorkerAsync([FromQuery] SearchWorkerDto dto)
+        {
+            var workers = await _workerService.SearchWorkerAsync(dto);
+            return Ok(ApiResponseDto<IEnumerable<WorkerDto>>.SuccessResponse(workers, $"Retrieved {workers.Count()} workers successfully."));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllWorkers()
+        {
+            var workers = await _workerService.GetAllWorkersAsync();
+            return Ok(ApiResponseDto<IEnumerable<WorkerDto>>.SuccessResponse(workers, $"Retrieved {workers.Count()} fish farm(s) successfully."));
         }
     }
 }

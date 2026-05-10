@@ -1,6 +1,155 @@
 @AquaCulture.API_HostAddress = http://localhost:5180
 
-GET {{AquaCulture.API_HostAddress}}/weatherforecast/
+### ===========================
+### FISH FARM ENDPOINTS
+### ===========================
+
+### Get All Fish Farms with Workers
+GET {{AquaCulture.API_HostAddress}}/api/FishFarm
+Accept: application/json
+
+###
+
+### Get Fish Farm by ID
+GET {{AquaCulture.API_HostAddress}}/api/FishFarm/{{farmId}}
+Accept: application/json
+
+###
+
+### Search Fish Farms
+GET {{AquaCulture.API_HostAddress}}/api/FishFarm/search?searchTerm=arctic&hasBarge=true&minAvailableCages=5&maxAvailableCages=50&sortBy=name_asc
+Accept: application/json
+
+###
+
+### Create Fish Farm
+POST {{AquaCulture.API_HostAddress}}/api/FishFarm
+Content-Type: application/json
+Accept: application/json
+
+{
+    "name": "Arctic Cod Farm",
+    "latitude": 69.6496,
+    "longitude": 18.9560,
+    "noOfCages": 20,
+    "hasBarge": true,
+    "pictureUrl": "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800",
+    "workers": [
+        {
+            "id": "28141080-2cbc-47e6-8e24-6cada46d13ff",
+            "role": 1
+        }
+    ]
+}
+
+###
+
+### Update Fish Farm
+PUT {{AquaCulture.API_HostAddress}}/api/FishFarm/{{farmId}}
+Content-Type: application/json
+Accept: application/json
+
+{
+    "name": "Updated Farm Name",
+    "latitude": 69.6497,
+    "longitude": 18.9561,
+    "noOfCages": 25,
+    "hasBarge": false,
+    "pictureUrl": "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800",
+    "workers": [
+        {
+            "id": "28141080-2cbc-47e6-8e24-6cada46d13ff",
+            "role": 0
+        }
+    ]
+}
+
+###
+
+### Delete Fish Farm
+DELETE {{AquaCulture.API_HostAddress}}/api/FishFarm/{{farmId}}
+Accept: application/json
+
+###
+
+### ===========================
+### WORKER ENDPOINTS
+### ===========================
+
+### Get All Workers
+GET {{AquaCulture.API_HostAddress}}/api/Worker
+Accept: application/json
+
+###
+
+### Get Worker by ID
+GET {{AquaCulture.API_HostAddress}}/api/Worker/{{workerId}}
+Accept: application/json
+
+###
+
+### Get Workers by Farm ID
+GET {{AquaCulture.API_HostAddress}}/api/Worker/farm/{{farmId}}
+Accept: application/json
+
+###
+
+### Search Workers
+GET {{AquaCulture.API_HostAddress}}/api/Worker/search?searchTerm=james&position=Worker&isAssigned=false
+Accept: application/json
+
+###
+
+### Create Worker
+POST {{AquaCulture.API_HostAddress}}/api/Worker
+Content-Type: application/json
+Accept: application/json
+
+{
+    "name": "James Anderson",
+    "profileImageUrl": null,
+    "age": 28,
+    "email": "james.anderson@email.com",
+    "position": 2,
+    "certifiedUntil": "2026-05-01",
+    "fishFarmId": null
+}
+
+###
+
+### Update Worker
+PUT {{AquaCulture.API_HostAddress}}/api/Worker/{{workerId}}
+Content-Type: application/json
+Accept: application/json
+
+{
+    "name": "James Anderson Updated",
+    "age": 29,
+    "email": "james.updated@email.com",
+    "position": 1,
+    "certifiedUntil": "2027-05-01"
+}
+
+###
+
+### Delete Worker
+DELETE {{AquaCulture.API_HostAddress}}/api/Worker/{{workerId}}
+Accept: application/json
+
+###
+
+### ===========================
+### IMAGE ENDPOINTS
+### ===========================
+
+### Get Upload Signature
+GET {{AquaCulture.API_HostAddress}}/api/Image/sign
+Accept: application/json
+
+###
+
+### Delete Image
+DELETE {{AquaCulture.API_HostAddress}}/api/Image/aquaculture%2Fyour_public_id
 Accept: application/json
 
 ###

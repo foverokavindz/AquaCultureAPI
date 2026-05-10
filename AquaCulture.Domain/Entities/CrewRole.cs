@@ -4,6 +4,7 @@
     {
         ChiefExecutiveOfficer,
         Captain,
-        Worker
+        Worker,
+        NotAssigned
     }
 }

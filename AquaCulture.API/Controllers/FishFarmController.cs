@@ -1,7 +1,7 @@
 ﻿using AquaCulture.Application.Dto.FishFarm;
 using AquaCulture.Application.Dto.Common;
-using AquaCulture.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using AquaCulture.Application.Interfaces.Services;
 
 namespace AquaCulture.API.Controllers
 {
@@ -32,7 +32,7 @@ namespace AquaCulture.API.Controllers
         {
             try
             {
-                var farm = await _farmService.GetFarmByIdAsync(id);
+                var farm = await _farmService.GetFishFarmByIdAsync(id);
                 return Ok(ApiResponseDto<FishFarmDto>.SuccessResponse(farm, $"Retrieved fish farm with ID {id} successfully."));
             }
             catch (KeyNotFoundException ex)
@@ -46,7 +46,7 @@ namespace AquaCulture.API.Controllers
         {
             try
             {
-                var farm = await _farmService.CreateFarmAsync(dto);
+                var farm = await _farmService.CreateFishFarmAsync(dto);
                 return CreatedAtAction(nameof(GetFishFarmById), new { id = farm.Id },
                     ApiResponseDto<FishFarmDto>.SuccessResponse(farm, "Farm created successfully"));
             }
@@ -61,7 +61,7 @@ namespace AquaCulture.API.Controllers
         {
             try
             {
-                var farm = await _farmService.UpdateFarmAsync(id, dto);
+                var farm = await _farmService.UpdateFishFarmAsync(id, dto);
                 return Ok(ApiResponseDto<FishFarmDto>.SuccessResponse(farm, "Farm updated successfully"));
             }
             catch (KeyNotFoundException ex)
@@ -75,13 +75,20 @@ namespace AquaCulture.API.Controllers
         {
             try
             {
-                await _farmService.DeleteFarmAsync(id);
+                await _farmService.DeleteFishFarmAsync(id);
                 return NoContent();
             }
             catch (KeyNotFoundException ex)
             {
                 return NotFound(ApiResponseDto<FishFarmDto>.ErrorResponse(ex.Message));
             }
+        }
+
+        [HttpGet("search")]
+        public async Task<IActionResult> SearchFarms([FromQuery] SearchFishFarmDto dto)
+        {
+            var farms = await _farmService.SearchFishFarmsAsync(dto);
+            return Ok(ApiResponseDto<IEnumerable<FishFarmDto>>.SuccessResponse(farms, $"Retrieved {farms.Count()} fish farms successfully."));
         }
     }
 }

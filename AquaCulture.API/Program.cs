@@ -1,8 +1,12 @@
-using AquaCulture.Application.interfaces;
+using AquaCulture.API.Middleware;
 using AquaCulture.Application.Interfaces;
+using AquaCulture.Application.Interfaces.Repositories;
+using AquaCulture.Application.Interfaces.services;
+using AquaCulture.Application.Interfaces.Services;
 using AquaCulture.Application.Services;
 using AquaCulture.Infrastructure.Data;
 using AquaCulture.Infrastructure.Repositories;
+using AquaCulture.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +23,8 @@ builder.Services.AddScoped<IWorkerRepository, WorkerRepository>();
 builder.Services.AddScoped<IFishFarmService, FishFarmService>();
 builder.Services.AddScoped<IWorkerService, WorkerService>();
 
+builder.Services.AddScoped<IImageUploader, CloudinaryImageUploader>();
+
 builder.Services.AddControllers();
 
 // Add services to the container.
@@ -26,7 +32,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Add CORS policy
+// CORS policy
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
@@ -39,6 +45,8 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
+//app.UseMiddleware<GlobalExceptionMiddleware>();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -49,10 +57,9 @@ if (app.Environment.IsDevelopment())
     await DbSeeder.SeedAsync(app.Services);
 }
 
-app.UseHttpsRedirection();
-
-app.UseCors("AllowAll");
-
+app.UseCors("AllowAll");                        
+app.UseHttpsRedirection();                      
+app.UseMiddleware<GlobalExceptionMiddleware>();
 app.MapControllers();
 
 app.Run();

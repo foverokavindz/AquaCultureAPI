@@ -1,4 +1,6 @@
-﻿using AquaCulture.Domain.Entities;
+﻿using AquaCulture.Application.Dto.FishFarm;
+using AquaCulture.Application.DTOs.FishFarm;
+using AquaCulture.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,8 +16,9 @@ namespace AquaCulture.Application.Dto.Worker
         public string? ProfileImageUrl { get; set; }
         public int Age { get; set; }
         public string Email { get; set; } = string.Empty;
-        public CrewRole Position { get; set; }
+        public CrewRole? Position { get; set; }
         public DateOnly CertifiedUntil { get; set; }
-        public Guid FishFarmId { get; set; }
+        public Guid? FishFarmId { get; set; }
+        public FishFarmSummaryDto? FishFarm { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace AquaCulture.Application.interfaces
+﻿namespace AquaCulture.Application.Interfaces.Repositories
 {
     public interface IRepository<T> where T : class
     {
@@ -6,7 +6,7 @@
         Task<IEnumerable<T>> GetAllAsync();
         Task AddAsync(T entity);
         Task UpdateAsync(T entity);
-        Task DeleteAsync(T entity);
+        Task<Task> DeleteAsync(T entity);
         Task SaveChangesAsync();
     }
 }

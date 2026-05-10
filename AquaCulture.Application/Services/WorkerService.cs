@@ -1,6 +1,8 @@
-﻿using AquaCulture.Application.Dto.Worker;
-using AquaCulture.Application.interfaces;
-using AquaCulture.Application.Interfaces;
+using AquaCulture.Application.Dto.FishFarm;
+using AquaCulture.Application.Dto.Worker;
+using AquaCulture.Application.DTOs.FishFarm;
+using AquaCulture.Application.Interfaces.Repositories;
+using AquaCulture.Application.Interfaces.services;
 using AquaCulture.Domain.Entities;
 
 namespace AquaCulture.Application.Services
@@ -16,7 +18,7 @@ namespace AquaCulture.Application.Services
             _farmRepository = farmRepository;
         }
 
-        public async Task<IEnumerable<WorkerDto>> GetWorkersByFarmIdAsync(Guid farmId)
+        public async Task<IEnumerable<WorkerDto>> GetWorkersByFishFarmIdAsync(Guid farmId)
         {
             var workers = await _workerRepository.GetWorkersByFarmIdAsync(farmId);
 
@@ -29,7 +31,13 @@ namespace AquaCulture.Application.Services
                 Email = w.Email,
                 Position = w.Position,
                 CertifiedUntil = w.CertifiedUntil,
-                FishFarmId = w.FishFarmId
+                FishFarmId = w.FishFarmId,
+                FishFarm = w.FishFarm != null ? new FishFarmSummaryDto
+                {
+                    Id = w.FishFarm.Id,
+                    Name = w.FishFarm.Name,
+                    PictureUrl = w.FishFarm.PictureUrl
+                } : null,
             });
         }
 
@@ -48,26 +56,39 @@ namespace AquaCulture.Application.Services
                 Email = worker.Email,
                 Position = worker.Position,
                 CertifiedUntil = worker.CertifiedUntil,
-                FishFarmId = worker.FishFarmId
+                FishFarmId = worker.FishFarmId,
+                FishFarm = worker.FishFarm != null ? new FishFarmSummaryDto
+                {
+                    Id = worker.FishFarm.Id,
+                    Name = worker.FishFarm.Name,
+                    PictureUrl = worker.FishFarm.PictureUrl
+                } : null,
             };
         }
 
         public async Task<WorkerDto> CreateWorkerAsync(CreateWorkerDto dto)
         {
-            var farm = await _farmRepository.GetByIdAsync(dto.FishFarmId);
-            if (farm == null)
-                throw new KeyNotFoundException($"Fish farm with ID {dto.FishFarmId} not found.");
-
+            // Create worker
             var worker = new Worker
             {
+                Id = Guid.NewGuid(),
                 Name = dto.Name,
                 ProfileImageUrl = dto.ProfileImageUrl,
                 Age = dto.Age,
                 Email = dto.Email,
                 Position = dto.Position,
                 CertifiedUntil = dto.CertifiedUntil,
-                FishFarmId = dto.FishFarmId
             };
+
+            // assign Fish farm if provided
+            if (dto.FishFarmId.HasValue)
+            {
+                var fishfarm = await _farmRepository.GetByIdAsync(dto.FishFarmId.Value);
+                if (fishfarm == null)
+                    throw new KeyNotFoundException($"Fish farm with ID {dto.FishFarmId} not found.");
+
+                worker.FishFarmId = fishfarm.Id;
+            }
 
             await _workerRepository.AddAsync(worker);
             await _workerRepository.SaveChangesAsync();
@@ -110,7 +131,13 @@ namespace AquaCulture.Application.Services
                 Email = worker.Email,
                 Position = worker.Position,
                 CertifiedUntil = worker.CertifiedUntil,
-                FishFarmId = worker.FishFarmId
+                FishFarmId = worker.FishFarmId,
+                FishFarm = worker.FishFarm != null ? new FishFarmSummaryDto
+                {
+                    Id = worker.FishFarm.Id,
+                    Name = worker.FishFarm.Name,
+                    PictureUrl = worker.FishFarm.PictureUrl
+                } : null,
             };
         }
 
@@ -120,8 +147,54 @@ namespace AquaCulture.Application.Services
             if (worker == null)
                 throw new KeyNotFoundException($"Worker with ID {id} not found.");
 
-            await _workerRepository.DeleteAsync(worker); // should be soft delete
+            await _workerRepository.DeleteAsync(worker);
             await _workerRepository.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<WorkerDto>> SearchWorkerAsync(SearchWorkerDto dto)
+        {
+            var workers = await _workerRepository.SearchWorkerAsync(dto);
+
+            return workers.Select(w => new WorkerDto
+            {
+                Id = w.Id,
+                Name = w.Name,
+                Age = w.Age,
+                Email = w.Email,
+                Position = w.Position,
+                CertifiedUntil = w.CertifiedUntil,
+                ProfileImageUrl = w.ProfileImageUrl,
+                FishFarmId= w.FishFarmId,
+                FishFarm = w.FishFarm != null ? new FishFarmSummaryDto
+                {
+                     Id = w.FishFarm.Id,
+                     Name = w.FishFarm.Name,
+                     PictureUrl = w.FishFarm.PictureUrl
+                } : null,
+            });
+        }
+
+        public async Task<IEnumerable<WorkerDto>> GetAllWorkersAsync()
+        {
+            var workers = await _workerRepository.GetAllAsync();
+
+            return workers.Select(w => new WorkerDto
+            {
+                Id = w.Id,
+                Name = w.Name,
+                ProfileImageUrl = w.ProfileImageUrl,
+                Age = w.Age,
+                Email = w.Email,
+                Position = w.Position,
+                CertifiedUntil = w.CertifiedUntil,
+                FishFarmId = w.FishFarmId,
+                FishFarm = w.FishFarm != null ? new FishFarmSummaryDto  
+                {
+                    Id = w.FishFarm.Id,
+                    Name = w.FishFarm.Name,
+                    PictureUrl = w.FishFarm.PictureUrl
+                } : null,
+            });
         }
     }
 }
