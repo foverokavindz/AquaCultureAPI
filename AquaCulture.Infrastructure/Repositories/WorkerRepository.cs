@@ -18,7 +18,7 @@ namespace AquaCulture.Infrastructure.Repositories
 
         public async Task<IEnumerable<Worker>> SearchWorkerAsync(SearchWorkerDto dto)
         {
-            var query = _dbSet.AsQueryable();
+            var query = _dbSet.Include(w => w.FishFarm).AsQueryable();
 
             // filter by name
             if (!string.IsNullOrEmpty(dto.SearchTerm))
@@ -29,8 +29,13 @@ namespace AquaCulture.Infrastructure.Repositories
                 query = query.Where(w => w.Position == dto.Position.Value);
 
             // filter unassigned workers
-            if (dto.IsAssigned.HasValue && dto.IsAssigned.Value == false)
-                query = query.Where(w => w.FishFarmId == null); 
+            if (dto.IsAssigned.HasValue)
+            {
+                if (dto.IsAssigned.Value)   
+                    query = query.Where(w => w.FishFarmId != null); 
+                else
+                    query = query.Where(w => w.FishFarmId == null); 
+            }
 
             // sorting
             query = dto.SortBy switch
@@ -43,6 +48,13 @@ namespace AquaCulture.Infrastructure.Repositories
             };
 
             return await query.ToListAsync();
+        }
+
+        public async Task<IEnumerable<Worker>> GetAllWithFarmAsync()
+        {
+            return await _dbSet
+                .Include(w => w.FishFarm)
+                .ToListAsync();
         }
     }
 

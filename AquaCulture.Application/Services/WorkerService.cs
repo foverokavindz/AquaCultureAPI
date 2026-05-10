@@ -176,7 +176,7 @@ namespace AquaCulture.Application.Services
 
         public async Task<IEnumerable<WorkerDto>> GetAllWorkersAsync()
         {
-            var workers = await _workerRepository.GetAllAsync();
+            var workers = await _workerRepository.GetAllWithFarmAsync();
 
             return workers.Select(w => new WorkerDto
             {
