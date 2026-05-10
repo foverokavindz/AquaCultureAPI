@@ -1,11 +1,6 @@
-﻿using AquaCulture.Application.Dto.FishFarm;
-using AquaCulture.Application.DTOs.FishFarm;
+﻿using AquaCulture.Application.DTOs.FishFarm;
 using AquaCulture.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace AquaCulture.Application.Dto.Worker
 {

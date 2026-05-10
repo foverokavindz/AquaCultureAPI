@@ -16,43 +16,6 @@ namespace AquaCulture.API.Controllers
             _imageUploader = imageUploader;
         }
 
-        //[HttpGet("sign")]
-        //public IActionResult GetSignature()
-        //{
-        //    Console.WriteLine("Sign endpoint hit");
-
-        //    try
-        //    {
-        //        var signature = _imageUploader.GenerateSignature();
-
-        //        Console.WriteLine($"Signature object: {signature.Signature}");
-        //        Console.WriteLine($"CloudName: {signature.CloudName}");
-
-        //        var response = new
-        //        {
-        //            signature = signature.Signature,
-        //            timestamp = signature.Timestamp,
-        //            cloudName = signature.CloudName,
-        //            apiKey = signature.ApiKey,
-        //            folder = signature.Folder
-        //        };
-
-        //        Console.WriteLine("About to serialize response"); // ← add this
-
-        //        var json = System.Text.Json.JsonSerializer.Serialize(response);
-
-        //        Console.WriteLine($"Serialized: {json}"); // ← add this
-
-        //        return Ok(response);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine($"EXCEPTION: {ex.Message}");
-        //        Console.WriteLine($"STACK: {ex.StackTrace}");
-        //        return StatusCode(500, ex.Message);
-        //    }
-        //}
-
         [HttpGet("sign")]
         public IActionResult GetSignature()
         {

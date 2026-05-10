@@ -1,5 +1,4 @@
 ﻿using AquaCulture.Application.Dto.Common;
-using AquaCulture.Application.Dto.FishFarm;
 using AquaCulture.Application.Dto.Worker;
 using AquaCulture.Application.Interfaces.services;
 using Microsoft.AspNetCore.Mvc;
