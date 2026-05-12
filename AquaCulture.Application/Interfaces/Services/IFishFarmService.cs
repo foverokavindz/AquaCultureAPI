@@ -8,7 +8,7 @@ namespace AquaCulture.Application.Interfaces.Services
         Task<FishFarmDto> GetFishFarmByIdAsync(Guid id);
         Task<FishFarmDto> CreateFishFarmAsync(CreateFishFarmDto dto);
         Task<FishFarmDto> UpdateFishFarmAsync(Guid id, UpdateFishFarmDto dto);
-        Task DeleteFishFarmAsync(Guid id);
+        Task<bool> DeleteFishFarmAsync(Guid id);
         Task<IEnumerable<FishFarmDto>> SearchFishFarmsAsync(SearchFishFarmDto dto);
     }
 }

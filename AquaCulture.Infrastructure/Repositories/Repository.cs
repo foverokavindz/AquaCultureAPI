@@ -20,7 +20,7 @@ namespace AquaCulture.Infrastructure.Repositories
             await _dbSet.AddAsync(entity);
         }
 
-        public async Task<Task> DeleteAsync(T entity)
+        public async Task DeleteAsync(T entity)
         {
             var property = entity.GetType().GetProperty("IsDeleted");
             if (property != null)
@@ -30,8 +30,6 @@ namespace AquaCulture.Infrastructure.Repositories
             }
             else
                 _dbSet.Remove(entity); 
-
-            return Task.CompletedTask;
         }
 
         public async Task<IEnumerable<T>> GetAllAsync()

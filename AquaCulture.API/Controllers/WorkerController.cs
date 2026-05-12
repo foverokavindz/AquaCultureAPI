@@ -1,6 +1,7 @@
 ﻿using AquaCulture.Application.Dto.Common;
 using AquaCulture.Application.Dto.Worker;
 using AquaCulture.Application.Interfaces.services;
+using AquaCulture.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AquaCulture.API.Controllers
@@ -76,8 +77,11 @@ namespace AquaCulture.API.Controllers
         {
             try
             {
-                await _workerService.DeleteWorkerAsync(id);
-                return NoContent();
+                var result = await _workerService.DeleteWorkerAsync(id);
+                if (!result)
+                    return NotFound(ApiResponseDto<WorkerDto>.ErrorResponse($"Worker with ID {id} not found."));
+
+                return Ok(ApiResponseDto<bool>.SuccessResponse(result, "Worker deleted successfully"));
             }
             catch (KeyNotFoundException ex)
             {

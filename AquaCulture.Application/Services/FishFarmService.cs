@@ -231,14 +231,27 @@ namespace AquaCulture.Application.Services
             };
         }
 
-        public async Task DeleteFishFarmAsync(Guid id)
+        public async Task<bool> DeleteFishFarmAsync(Guid id)
         {
             var farm = await _farmRepository.GetByIdAsync(id);
             if (farm == null)
                 throw new KeyNotFoundException($"Farm with id {id} not found");
 
+            //unassign all workers from this farm
+            var workers = await _workerRepository.GetWorkersByFarmIdAsync(id);
+
+            foreach (var worker in workers)
+            {
+                worker.FishFarmId = null;
+                worker.Position = CrewRole.NotAssigned;
+                await _workerRepository.UpdateAsync(worker);
+            }
+
             await _farmRepository.DeleteAsync(farm);
+            await _workerRepository.SaveChangesAsync();
             await _farmRepository.SaveChangesAsync();
+
+            return true;
         }
 
         public async Task<IEnumerable<FishFarmDto>> SearchFishFarmsAsync(SearchFishFarmDto dto)

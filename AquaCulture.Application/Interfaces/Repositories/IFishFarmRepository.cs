@@ -8,6 +8,6 @@ namespace AquaCulture.Application.Interfaces.Repositories
         Task<FishFarm> GetFishFarmByIdWithWorkersAsync(Guid id);
         Task<IEnumerable<FishFarm>> GetAllFarmsWithWorkersAsync();
         Task<IEnumerable<FishFarm>> SearchFarmsAsync(SearchFishFarmDto dto);
-
+        
     }
 }

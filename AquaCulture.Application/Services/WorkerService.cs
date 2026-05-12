@@ -141,7 +141,7 @@ namespace AquaCulture.Application.Services
             };
         }
 
-        public async Task DeleteWorkerAsync(Guid id)
+        public async Task<bool> DeleteWorkerAsync(Guid id)
         {
             var worker = await _workerRepository.GetByIdAsync(id);
             if (worker == null)
@@ -149,6 +149,8 @@ namespace AquaCulture.Application.Services
 
             await _workerRepository.DeleteAsync(worker);
             await _workerRepository.SaveChangesAsync();
+
+            return true;
         }
 
         public async Task<IEnumerable<WorkerDto>> SearchWorkerAsync(SearchWorkerDto dto)

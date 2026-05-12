@@ -11,7 +11,7 @@ namespace AquaCulture.Application.Interfaces.services
         Task<WorkerDto> GetWorkerByIdAsync(Guid id);
         Task<WorkerDto> CreateWorkerAsync(CreateWorkerDto dto);
         Task<WorkerDto> UpdateWorkerAsync(Guid id, UpdateWorkerDto dto);
-        Task DeleteWorkerAsync(Guid id);
+        Task<bool> DeleteWorkerAsync(Guid id);
         Task<IEnumerable<WorkerDto>> SearchWorkerAsync(SearchWorkerDto dto);
         Task<WorkerDto?> GetByIdWithFishFarmAsync(Guid id);
     }
