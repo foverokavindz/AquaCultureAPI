@@ -89,8 +89,6 @@ Create `appsettings.Development.json` inside `AquaCulture.API/` and add your cre
 }
 ```
 
-> ⚠️ Never commit `appsettings.Development.json` — it is already in `.gitignore`.
-
 ### 3. Run database migrations
 
 ```bash
@@ -179,6 +177,9 @@ dotnet ef database update --project AquaCulture.Infrastructure --startup-project
 # remove last migration (if not applied)
 dotnet ef migrations remove --project AquaCulture.Infrastructure --startup-project AquaCulture.API
 ```
+
+### DB seeder
+DB seeder will seed the database with 4 fish farms and 12 workers, if there are no data availble in the DB
 
 ---
 
